@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: activation_db
+      POSTGRES_USER: activation_user
+      POSTGRES_PASSWORD: activation_password
+    ports:
+      - "127.0.0.1:5435:5432"
+    volumes:
+      - activation_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U activation_user -d activation_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  activation_postgres_data:
