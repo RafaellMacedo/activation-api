@@ -32,3 +32,9 @@ management:
     health:
       probes:
         enabled: true
+
+app:
+  security:
+    issuer: ${JWT_ISSUER:http://localhost:9000}
+    audience: ${JWT_AUDIENCE:activation-api}
+    jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:9000/oauth2/jwks}
