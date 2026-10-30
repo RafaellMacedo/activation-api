@@ -17,6 +17,7 @@ public class ProviderClientConfiguration {
     @Bean(destroyMethod = "close")
     public HttpClient providerHttpClient(ProviderProperties properties) {
         return HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(properties.connectTimeout())
                 .followRedirects(HttpClient.Redirect.NEVER)
                 .build();

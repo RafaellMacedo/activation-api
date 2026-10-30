@@ -12,12 +12,17 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class ProviderActivationClient {
 
     private final RestClient restClient;
     private final Clock clock;
+
+    private static final Logger log =
+        LoggerFactory.getLogger(ProviderActivationClient.class);
 
     public ProviderActivationClient(
             @Qualifier("providerRestClient") RestClient restClient,
@@ -79,6 +84,11 @@ public class ProviderActivationClient {
                         );
                     });
         } catch (ResourceAccessException exception) {
+            log.warn(
+                    "Provider transport failure for activation request {}: {}",
+                    request.requestId(),
+                    exception.getMessage()
+            );
             return new ProviderActivationResult(
                     ProviderOutcome.TEMPORARY_FAILURE,
                     null,
