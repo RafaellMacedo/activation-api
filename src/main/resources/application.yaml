@@ -38,3 +38,16 @@ app:
     issuer: ${JWT_ISSUER:http://localhost:9000}
     audience: ${JWT_AUDIENCE:activation-api}
     jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:9000/oauth2/jwks}
+
+  provider:
+    base-url: ${PROVIDER_BASE_URL:http://localhost:9090}
+    connect-timeout: ${PROVIDER_CONNECT_TIMEOUT:2s}
+    read-timeout: ${PROVIDER_READ_TIMEOUT:5s}
+    api-key: ${PROVIDER_API_KEY:}
+  
+  processing:
+    max-attempts: ${PROCESSING_MAX_ATTEMPTS:3}
+    initial-backoff: ${PROCESSING_INITIAL_BACKOFF:2s}
+    max-backoff: ${PROCESSING_MAX_BACKOFF:1m}
+    enabled: ${PROCESSING_ENABLED:false}
+    poll-delay: ${PROCESSING_POLL_DELAY:1000}
