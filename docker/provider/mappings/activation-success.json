@@ -1,0 +1,15 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/provider/v1/activate",
+    "headers": {
+      "Idempotency-Key": {
+        "matches": "[0-9a-fA-F-]{36}"
+      }
+    }
+  },
+  "response": {
+    "status": 204
+  }
+}

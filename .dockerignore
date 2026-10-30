@@ -1,0 +1,9 @@
+.git/
+target/
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+*.log
+HELP.md

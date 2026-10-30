@@ -16,5 +16,37 @@ services:
       retries: 10
     restart: unless-stopped
 
+  provider:
+    image: wiremock/wiremock:3.13.2
+    ports:
+      - "127.0.0.1:9090:8080"
+    volumes:
+      - ./docker/provider/mappings:/home/wiremock/mappings:ro
+      - ./target/local-auth/public:/home/wiremock/__files/local-auth:ro
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/activation_db
+      DB_USERNAME: activation_user
+      DB_PASSWORD: activation_password
+      PROVIDER_BASE_URL: http://provider:8080
+      PROCESSING_ENABLED: "true"
+      JWT_ISSUER: ${JWT_ISSUER:-http://local-auth}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-activation-api}
+      JWT_JWK_SET_URI: ${JWT_JWK_SET_URI:-http://provider:8080/.well-known/jwks.json}
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=75.0"
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      provider:
+        condition: service_started
+    stop_grace_period: 30s
+    restart: unless-stopped
+
 volumes:
   activation_postgres_data:
